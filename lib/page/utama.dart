@@ -45,7 +45,7 @@ class _UtamaState extends State<Utama> {
         _currentPage = 0;
       });
     }
-    // Delay to call _nextPage again for looping
+   
     Future.delayed(const Duration(seconds: 5), _nextPage);
   }
 
@@ -56,7 +56,7 @@ class _UtamaState extends State<Utama> {
     return Scaffold(
       body: Stack(
         children: [
-          // Image Slider with PageView
+         
           gambarBadag(context),
 
           // Main content
@@ -269,7 +269,7 @@ class _UtamaState extends State<Utama> {
                 })).then((shouldRefresh) {
                   if (shouldRefresh == true) {
                     setState(() {
-                      selectedIndex = 1;
+                      selectedIndex = 0;
                     });
                   }
                 });

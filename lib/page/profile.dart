@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_nice_funstantic_park/data/dprofile.dart';
 import 'package:the_nice_funstantic_park/data/favorite.dart';
 import 'package:the_nice_funstantic_park/method/ceklisst.dart';
-import 'package:the_nice_funstantic_park/page/editprofile.dart';
+import 'package:the_nice_funstantic_park/page/pengaturan.dart';
 import 'package:the_nice_funstantic_park/page/ulasan.dart';
 
 class Profile extends StatefulWidget {
@@ -13,8 +13,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  
   int selectedIndex = 1;
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,16 +24,16 @@ class _ProfileState extends State<Profile> {
         actions: [
           IconButton(
             onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const Edit();
-        })).then((shouldRefresh) {
-          if (shouldRefresh == true) {
-            setState(() {
-              selectedIndex=1;
-            });
-          }
-        });
-      },
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const Pengaturan();
+              })).then((shouldRefresh) {
+                if (shouldRefresh == true) {
+                  setState(() {
+                    selectedIndex = 1;
+                  });
+                }
+              });
+            },
             icon: const Icon(
               Icons.settings,
               size: 30,
@@ -108,10 +109,10 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget tampil() {
-    if (selectedIndex == 1) {    
+    if (selectedIndex == 1) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(profile.label.length, (index) {
+        children: List.generate(profile.label.length - 1, (index) {
           return cardData(profile.label[index], profile.isi[index]);
         }),
       );
@@ -186,7 +187,7 @@ class _ProfileState extends State<Profile> {
         })).then((shouldRefresh) {
           if (shouldRefresh == true) {
             setState(() {
-              selectedIndex=2;
+              selectedIndex = 2;
             });
           }
         });

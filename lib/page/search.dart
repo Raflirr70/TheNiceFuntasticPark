@@ -10,30 +10,27 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  // Combined list from destinasiData, playgroundData, and restoranData
   final List<Map<String, String>> allItems = [
     ...destinasiData,
     ...playgroundData,
     ...restoranData,
   ];
 
-  // List to hold filtered results
   List<Map<String, String>> filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    filteredItems = allItems; // Initially, show all items
+    filteredItems = allItems;
   }
 
-  // Method to filter items based on search query
   void _filterItems(String query) {
     final results = allItems.where((item) {
       return item["title"]!.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     setState(() {
-      filteredItems = results; // Update filtered list
+      filteredItems = results;
     });
   }
 
@@ -48,9 +45,8 @@ class _SearchState extends State<Search> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search input field
             TextField(
-              onChanged: _filterItems, // Update filter on text change
+              onChanged: _filterItems,
               decoration: const InputDecoration(
                 labelText: 'Search for a title',
                 prefixIcon: Icon(Icons.search),
@@ -58,22 +54,28 @@ class _SearchState extends State<Search> {
               ),
             ),
             const SizedBox(height: 20),
-            // Display filtered list
             Expanded(
               child: filteredItems.isEmpty
-                  ? const Center(child: Text("No results found"))
+                  ? notfound()
                   : ListView.builder(
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Ulasan(index: filteredItems[index]['index'].toString(), kategori:filteredItems[index]['kategori'].toString() );
-                            },));
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return Ulasan(
+                                    index: filteredItems[index]['index']
+                                        .toString(),
+                                    kategori: filteredItems[index]['kategori']
+                                        .toString());
+                              },
+                            ));
                           },
                           child: ListTile(
-                          title: Text(filteredItems[index]["title"] ?? "Unknown"),    
-                        ),
+                            title: Text(
+                                filteredItems[index]["title"] ?? "Unknown"),
+                          ),
                         );
                       },
                     ),
@@ -83,4 +85,30 @@ class _SearchState extends State<Search> {
       ),
     );
   }
+}
+
+Widget notfound() {
+  return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SizedBox(
+          width: 100,
+          height: 100,
+          child: Opacity(
+            opacity: 0.5,
+            child: Image.asset(
+              "assets/img/notfound.png",
+              fit: BoxFit.cover,
+            ),
+          )),
+      const SizedBox(
+        height: 10,
+      ),
+      const Text(
+        "Maaf Data Tidak Di Temukan",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )
+    ],
+  ));
 }

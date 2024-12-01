@@ -27,7 +27,7 @@ class _UlasanState extends State<Ulasan> {
   @override
   void initState() {
     super.initState();
-   
+
     index = int.tryParse(widget.index) ?? 0;
     kategori = int.tryParse(widget.kategori) ?? 0;
     final review = ceklist(kategori).firstWhere(
@@ -51,7 +51,7 @@ class _UlasanState extends State<Ulasan> {
   }
 
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -79,6 +79,12 @@ class _UlasanState extends State<Ulasan> {
                           setState(() {
                             isFavorite = !isFavorite;
                             if (isFavorite) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Ditambahkan Ke Favorit'),
+                                    duration: Duration(seconds: 2)),
+                              );
                               favorit.add(Favorite(
                                   kategori: kategori.toString(),
                                   index: index.toString()));
@@ -163,11 +169,12 @@ class _UlasanState extends State<Ulasan> {
     );
   }
 
-   Widget komentar(BuildContext context) {
+  Widget komentar(BuildContext context) {
     final reviewData = reviews.firstWhere(
       (review) =>
           review.index == widget.index && review.kategori == widget.kategori,
-      orElse: () => tReview(index: widget.index, kategori: widget.kategori, comments: []),
+      orElse: () =>
+          tReview(index: widget.index, kategori: widget.kategori, comments: []),
     );
 
     if (reviewData.comments.isEmpty) {
@@ -181,7 +188,6 @@ class _UlasanState extends State<Ulasan> {
           .toList(),
     );
   }
-
 
   Widget ulasanCard(Review review) {
     return Container(
@@ -289,8 +295,14 @@ class _UlasanState extends State<Ulasan> {
     );
   }
 
-  Widget gambarKecil(String imagePath) {
-    return Padding(
+ Widget gambarKecil(String imagePath) {
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        image = imagePath;
+      });
+    },
+    child: Padding(
       padding: const EdgeInsets.only(right: 20),
       child: SizedBox(
         width: 100,
@@ -303,8 +315,10 @@ class _UlasanState extends State<Ulasan> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget rating(int x) {
     return Row(
@@ -325,7 +339,8 @@ class AllCommentsPage extends StatelessWidget {
   final String index;
   final String kategori;
 
-  const AllCommentsPage({super.key, required this.index, required this.kategori});
+  const AllCommentsPage(
+      {super.key, required this.index, required this.kategori});
 
   @override
   Widget build(BuildContext context) {

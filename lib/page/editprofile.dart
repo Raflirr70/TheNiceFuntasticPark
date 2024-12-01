@@ -20,25 +20,25 @@ class _EditState extends State<Edit> {
   void initState() {
     super.initState();
     // Set the initial values of the text fields
-    namaController.text = profile.isi[0];
-    umurController.text = profile.isi[1];
-    alamatController.text = profile.isi[2];
+    namaController.text = profile.isi[1];
+    umurController.text = profile.isi[2];
+    alamatController.text = profile.isi[3];
   }
 
   // Function to handle save button
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        // Update the profile with the new values
-        profile.isi[0] = namaController.text;
-        profile.isi[1] = umurController.text;
-        profile.isi[2] = alamatController.text;
+    
+        profile.isi[1] = namaController.text;
+        profile.isi[2] = umurController.text;
+        profile.isi[3] = alamatController.text;
         Navigator.pop(context,true);
       });
 
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
+        const SnackBar(content: Text('Profile Telah Di Update')),
       );
     }
   }

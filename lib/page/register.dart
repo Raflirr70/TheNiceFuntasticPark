@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:the_nice_funstantic_park/data/dprofile.dart';
+import 'package:the_nice_funstantic_park/page/utama.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -8,49 +10,79 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  get child => null;
+  TextEditingController emailControler = TextEditingController();
+  TextEditingController passControler = TextEditingController();
+  TextEditingController cpassControler = TextEditingController();
+
+  bool cekPass() {
+    return passControler.text == cpassControler.text;
+  }
+
+  void daftar() {
+    if (cekPass()) {
+      setState(() {
+        profile.isi[0]=emailControler.text;
+         profile.isi[4]=passControler.text;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Berhasil Daftar'),duration: Duration(seconds: 2)),
+      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return const Utama();
+      },));
+
+      
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password dan Confirm Password tidak sama'),duration: Duration(seconds: 2)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red,
-      body: Column(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 6,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Padding(
+      body: SingleChildScrollView(  
+        child: Column(
+          children: [
+            SizedBox(
+               width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height /5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Padding(
                       padding: const EdgeInsets.only(top: 10, left: 10),
-                      child: IconButton(onPressed: (){
-                        Navigator.pop(context);
-                      }, icon: const Icon(Icons.arrow_back),color: Colors.black,)
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                        color: Colors.black,
                       ),
-                ),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Register",
-                      style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                )
-              ],
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            //TAMPILAN UATAMA
-
-            child: Container(
+            Container(
               width: double.infinity,
+              height: MediaQuery.of(context).size.height- MediaQuery.of(context).size.height/5,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -60,9 +92,6 @@ class _RegisterState extends State<Register> {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 50, left: 40, right: 40),
-
-                // CONTAINER UTAMA
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,20 +100,17 @@ class _RegisterState extends State<Register> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-
-                    const SizedBox(height: 10), //Buat Jarak
-
-                    // BOX EMAIL
+                    const SizedBox(height: 10), // Space
                     TextField(
-                      controller: TextEditingController(),
+                      controller: emailControler,
                       decoration: InputDecoration(
-                          labelText: "Email",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          prefixIcon:
-                              const Icon(Icons.alternate_email_outlined),
-                          prefixIconColor: Colors.black38),
+                        labelText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.alternate_email_outlined),
+                        prefixIconColor: Colors.black38,
+                      ),
                     ),
                     const SizedBox(height: 30),
                     const Text(
@@ -92,53 +118,44 @@ class _RegisterState extends State<Register> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-
-                    const SizedBox(height: 10), //Buat Jarak
-
-                    // BOX PASSWORD
+                    const SizedBox(height: 10), // Space
                     TextField(
-                      controller: TextEditingController(),
+                      controller: passControler,
                       obscureText: true,
                       decoration: InputDecoration(
-                          labelText: "Password",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          prefixIcon: const Icon(Icons.lock_outline),
-                          prefixIconColor: Colors.black38),
+                        labelText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        prefixIconColor: Colors.black38,
+                      ),
                     ),
-
-                    const SizedBox(height: 30), //Buat Jarak
-
+                    const SizedBox(height: 30),
                     const Text(
                       "Konfirmasi Password",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-
-                    const SizedBox(height: 10), //Buat Jarak
-
-                    // BOX CONFIRM PASSWORD
+                    const SizedBox(height: 10), // Space
                     TextField(
-                      controller: TextEditingController(),
+                      controller: cpassControler,
                       obscureText: true,
                       decoration: InputDecoration(
-                          labelText: "Konfirmasi Password",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          prefixIcon: const Icon(Icons.lock_outline),
-                          prefixIconColor: Colors.black38),
+                        labelText: "Konfirmasi Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        prefixIconColor: Colors.black38,
+                      ),
                     ),
-
-                    const SizedBox(height: 50), //Buat Jarak
-
-                    //TOMBOL DAFTAR
+                    const SizedBox(height: 50), // Space
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: daftar,  // Call the daftar function
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.red,
@@ -152,61 +169,47 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-
-                    const SizedBox(height: 100), //Buat Jarak
-
-                    //CONTAINER 2
-                    Expanded(
-                        child: SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Daftar Dengan",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                    const SizedBox(height: 50), // Space
+                    const Center(child:  Text(
+                      "Daftar Dengan",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 15),
+                    ),),
+                    const SizedBox(height: 10), // Space
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                           ),
-
-                          const SizedBox(height: 10), //Buat Jarak
-
-                          //WADAH TOMBOL
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              //TOMBOL GOGGLE
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5))),
-                                child: const Text("Goggle"),
-                              ),
-
-                              //TOMBOL FACEBOOK
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5))),
-                                child: const Text("Facebook"),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ))
+                          child: const Text("Google"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text("Facebook"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20), // Space
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
