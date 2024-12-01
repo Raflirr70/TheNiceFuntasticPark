@@ -160,7 +160,7 @@ class _KategoriiState extends State<Kategorii> {
   // Jang app bar //
   Widget createAppbar(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       height: MediaQuery.of(context).size.height / 14,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(

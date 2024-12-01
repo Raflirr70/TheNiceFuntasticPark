@@ -44,7 +44,7 @@ class _ProfileState extends State<Profile> {
                   height: 100,
                   child: ClipOval(
                     child: Image.asset(
-                      "img/gambar.jpg",
+                      "assets/img/gambar.jpg",
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -123,7 +123,7 @@ class _ProfileState extends State<Profile> {
         });
       },
       child: Container(
-        width: 100,
+        width: 110,
         height: 30,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
           child: Opacity(
             opacity: 0.5,
             child: Image.asset(
-              "img/favorite.png",
+              "assets/img/favorite.png",
               fit: BoxFit.cover,
             ),
           ),

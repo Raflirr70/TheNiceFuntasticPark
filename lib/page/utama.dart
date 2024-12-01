@@ -25,7 +25,7 @@ class _UtamaState extends State<Utama> {
 
           // Konten
           Container(
-            margin: EdgeInsets.only(top: screenHeight / 4),
+            margin: EdgeInsets.only(top: screenHeight / 4+60),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(45),
@@ -119,8 +119,8 @@ class _UtamaState extends State<Utama> {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
                   image,
-                  width: 120,
-                  height: 90,
+                  width: MediaQuery.of(context).size.width/3,
+                  height: MediaQuery.of(context).size.height/8,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -201,7 +201,7 @@ class _UtamaState extends State<Utama> {
   Widget gambarBadag(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 3,
+      height: MediaQuery.of(context).size.height / 2,
       child: Image.asset(
         "assets/img/gambar.jpg",
         fit: BoxFit.cover,
@@ -211,9 +211,9 @@ class _UtamaState extends State<Utama> {
 
   Widget createAppbar() {
     return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
+      top: 20,
+      left: 7,
+      right: 7,
       child: Container(
         height: MediaQuery.of(context).size.height / 14,
         padding: const EdgeInsets.symmetric(horizontal: 10),
