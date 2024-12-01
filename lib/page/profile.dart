@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_nice_funstantic_park/data/dprofile.dart';
 import 'package:the_nice_funstantic_park/data/favorite.dart';
 import 'package:the_nice_funstantic_park/method/ceklisst.dart';
+import 'package:the_nice_funstantic_park/page/editprofile.dart';
 import 'package:the_nice_funstantic_park/page/ulasan.dart';
 
 class Profile extends StatefulWidget {
@@ -21,7 +22,17 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const Edit();
+        })).then((shouldRefresh) {
+          if (shouldRefresh == true) {
+            setState(() {
+              selectedIndex=1;
+            });
+          }
+        });
+      },
             icon: const Icon(
               Icons.settings,
               size: 30,
@@ -97,15 +108,11 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget tampil() {
-    if (selectedIndex == 1) {
-      // SEMENTARA NANTI DI PINDAH KE REGISTER // 
-      Dprofile userProfile =
-          Dprofile(isi: ["John Doe", "25", "Jl. Merdeka No. 10"]);
-
+    if (selectedIndex == 1) {    
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(userProfile.label.length, (index) {
-          return cardData(userProfile.label[index], userProfile.isi[index]);
+        children: List.generate(profile.label.length, (index) {
+          return cardData(profile.label[index], profile.isi[index]);
         }),
       );
     } else if (selectedIndex == 2) {

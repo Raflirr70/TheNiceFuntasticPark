@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:the_nice_funstantic_park/page/kategori.dart';
+import 'package:the_nice_funstantic_park/page/search.dart';
 import 'package:the_nice_funstantic_park/page/ulasan.dart';
 import 'package:the_nice_funstantic_park/data/list_halaman_utama.dart';
+import 'package:the_nice_funstantic_park/data/gambargerak.dart';
 
 class Utama extends StatefulWidget {
   const Utama({super.key});
@@ -12,6 +14,40 @@ class Utama extends StatefulWidget {
 
 class _UtamaState extends State<Utama> {
   int selectedIndex = 0;
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+ 
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3), _nextPage);
+  }
+
+  void _nextPage() {
+    if (_currentPage < gambar.length - 1) {
+      _controller.animateToPage(
+        _currentPage + 1,
+        duration: const Duration(seconds: 3),
+        curve: Curves.easeInOut,
+      );
+      setState(() {
+        _currentPage++;
+      });
+    } else {
+      _controller.animateToPage(
+        0,
+        duration: const Duration(seconds: 3),
+        curve: Curves.easeInOut,
+      );
+      setState(() {
+        _currentPage = 0;
+      });
+    }
+    // Delay to call _nextPage again for looping
+    Future.delayed(const Duration(seconds: 5), _nextPage);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +56,12 @@ class _UtamaState extends State<Utama> {
     return Scaffold(
       body: Stack(
         children: [
-          // Gambar Utama
+          // Image Slider with PageView
           gambarBadag(context),
 
-          // Konten
+          // Main content
           Container(
-            margin: EdgeInsets.only(top: screenHeight / 4+60),
+            margin: EdgeInsets.only(top: screenHeight / 4 + 70),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(45),
@@ -37,7 +73,7 @@ class _UtamaState extends State<Utama> {
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
               child: Column(
                 children: [
-                  // Kategori
+                  // Category Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -60,6 +96,23 @@ class _UtamaState extends State<Utama> {
     );
   }
 
+  Widget gambarBadag(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2-95,
+      child: PageView(
+        controller: _controller,
+        children: gambar.map((image) {
+          return Image.asset(
+            image,
+            fit: BoxFit.cover,
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  // Category display
   Widget tampil() {
     if (selectedIndex == 0) {
       return listViewBuilder(destinasiData);
@@ -119,8 +172,8 @@ class _UtamaState extends State<Utama> {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
                   image,
-                  width: MediaQuery.of(context).size.width/3,
-                  height: MediaQuery.of(context).size.height/8,
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: MediaQuery.of(context).size.height / 8,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -198,17 +251,6 @@ class _UtamaState extends State<Utama> {
     );
   }
 
-  Widget gambarBadag(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2,
-      child: Image.asset(
-        "assets/img/gambar.jpg",
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
   Widget createAppbar() {
     return Positioned(
       top: 20,
@@ -227,7 +269,7 @@ class _UtamaState extends State<Utama> {
                 })).then((shouldRefresh) {
                   if (shouldRefresh == true) {
                     setState(() {
-                     selectedIndex=1;
+                      selectedIndex = 1;
                     });
                   }
                 });
@@ -238,7 +280,9 @@ class _UtamaState extends State<Utama> {
             ),
             IconButton(
               onPressed: () {
-                // Search function
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const Search();
+                },));
               },
               icon: const Icon(Icons.search),
               iconSize: 40,
