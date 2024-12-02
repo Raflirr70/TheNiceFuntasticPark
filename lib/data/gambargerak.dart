@@ -1,4 +1,5 @@
 List<String> gambar = [
-  "assets/img/contoh.jpeg",
-  "assets/img/gambar.jpg","assets/img/contoh.jpeg","assets/img/gambar.jpg",
+  "assets/img/funtasticpark.png",
+  "assets/img/funtasticpark2.png",
+  "assets/img/funtasticpark3.png",
 ];

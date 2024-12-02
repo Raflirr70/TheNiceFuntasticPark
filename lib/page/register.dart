@@ -19,7 +19,13 @@ class _RegisterState extends State<Register> {
   }
 
   void daftar() {
-    if (cekPass()) {
+    if(emailControler.text.isEmpty || passControler.text.isEmpty || cpassControler.text.isEmpty)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tidak Boleh Ada yang Kosong'),duration: Duration(seconds: 2)),
+      );
+    }else{
+       if (cekPass()) {
       setState(() {
         profile.isi[0]=emailControler.text;
          profile.isi[4]=passControler.text;
@@ -37,6 +43,8 @@ class _RegisterState extends State<Register> {
         const SnackBar(content: Text('Password dan Confirm Password tidak sama'),duration: Duration(seconds: 2)),
       );
     }
+    }
+   
   }
 
   @override
@@ -169,7 +177,7 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50), // Space
+                    const SizedBox(height: 30), // Space
                     const Center(child:  Text(
                       "Daftar Dengan",
                       style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_nice_funstantic_park/page/login.dart';
+
+import 'package:the_nice_funstantic_park/page/utama.dart';
 
 
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:Login(),
+      home:Utama(),
     );
   }
 }

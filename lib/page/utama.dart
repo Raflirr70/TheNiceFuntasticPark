@@ -16,7 +16,6 @@ class _UtamaState extends State<Utama> {
   int selectedIndex = 0;
   final PageController _controller = PageController();
   int _currentPage = 0;
- 
 
   @override
   void initState() {
@@ -45,7 +44,7 @@ class _UtamaState extends State<Utama> {
         _currentPage = 0;
       });
     }
-   
+
     Future.delayed(const Duration(seconds: 5), _nextPage);
   }
 
@@ -56,7 +55,6 @@ class _UtamaState extends State<Utama> {
     return Scaffold(
       body: Stack(
         children: [
-         
           gambarBadag(context),
 
           // Main content
@@ -99,7 +97,7 @@ class _UtamaState extends State<Utama> {
   Widget gambarBadag(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2-95,
+      height: MediaQuery.of(context).size.height / 2 - 95,
       child: PageView(
         controller: _controller,
         children: gambar.map((image) {
@@ -144,108 +142,121 @@ class _UtamaState extends State<Utama> {
       String kategori) {
     List<String> words = description.split(" ");
     String truncatedDescription =
-        words.length > 10 ? "${words.sublist(0, 5).join(" ")}..." : description;
+        words.length > 10 ? "${words.sublist(0, 10).join(" ")}..." : description;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Container(
-        width: double.infinity,
-        height: 130,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              offset: const Offset(4, 8),
-              blurRadius: 10,
-            )
-          ],
-          border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  image,
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: MediaQuery.of(context).size.height / 8,
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Ulasan(
+              index: index,
+              kategori: kategori,
+            ),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Container(
+          width: double.infinity,
+          height: 130,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                offset: const Offset(4, 8),
+                blurRadius: 10,
+              )
+            ],
+            border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    image,
+                    width: MediaQuery.of(context).size.width / 3,
+                    height: MediaQuery.of(context).size.height / 8,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 5),
-                      child: Text(
-                        truncatedDescription,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10,right: 20),
+                        child: Text(
+                          truncatedDescription,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 9),textAlign: TextAlign.justify,),
                       ),
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Ulasan(
-                                  index: index,
-                                  kategori: kategori,
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Ulasan(
+                                    index: index,
+                                    kategori: kategori,
+                                  ),
                                 ),
+                              );
+                            },
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(right: 10, bottom: 10),
+                              
+                              height: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.red,
                               ),
-                            );
-                          },
-                          child: Container(
-                            margin:
-                                const EdgeInsets.only(right: 10, bottom: 10),
-                            width: 100,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.green,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "Ulasan",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                              child: const Center(
+                                child: Text(
+                                  "Ulasan",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -280,9 +291,11 @@ class _UtamaState extends State<Utama> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const Search();
-                },));
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const Search();
+                  },
+                ));
               },
               icon: const Icon(Icons.search),
               iconSize: 40,
@@ -305,7 +318,7 @@ class _UtamaState extends State<Utama> {
         width: 100,
         height: 30,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           color: selectedIndex == index ? Colors.red : Colors.white,
           border: Border.all(color: Colors.grey.shade300),
         ),

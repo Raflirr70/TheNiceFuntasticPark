@@ -258,17 +258,18 @@ class _UlasanState extends State<Ulasan> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: IconButton(
             onPressed: () {
               setState(() {
                 Navigator.pop(context, true);
               });
             },
-            icon: const Icon(
+            icon:  Icon(
               Icons.arrow_back,
               size: 30,
-              shadows: [Shadow(color: Colors.white)],
+              color: Colors.white,
+              shadows: [Shadow(color: Colors.black.withOpacity(0.5),blurRadius: 1,offset: Offset(1, 1))],
             ),
             color: Colors.white,
           ),
@@ -321,12 +322,13 @@ class _UlasanState extends State<Ulasan> {
 
 
   Widget rating(int x) {
+    
     return Row(
       children: List.generate(
-        x,
-        (index) => const Icon(
+        5,
+        (index) => Icon(
           Icons.star,
-          color: Colors.amber,
+          color: index < x ? Colors.amber : Colors.grey,
           size: 24,
         ),
       ),
@@ -410,12 +412,13 @@ class AllCommentsPage extends StatelessWidget {
   }
 
   Widget rating(int x) {
+    
     return Row(
       children: List.generate(
-        x,
-        (index) => const Icon(
+        5,
+        (index) => Icon(
           Icons.star,
-          color: Colors.amber,
+          color: index < x ? Colors.amber : Colors.grey,
           size: 24,
         ),
       ),
