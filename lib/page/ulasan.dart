@@ -3,6 +3,7 @@ import 'package:the_nice_funstantic_park/data/favorite.dart';
 import 'package:the_nice_funstantic_park/data/list_komentar.dart';
 import 'package:the_nice_funstantic_park/data/gambarkecil.dart';
 import 'package:the_nice_funstantic_park/method/ceklisst.dart';
+import 'package:the_nice_funstantic_park/page/allcoment.dart';
 
 class Ulasan extends StatefulWidget {
   final String index;
@@ -269,7 +270,7 @@ class _UlasanState extends State<Ulasan> {
               Icons.arrow_back,
               size: 30,
               color: Colors.white,
-              shadows: [Shadow(color: Colors.black.withOpacity(0.5),blurRadius: 1,offset: Offset(1, 1))],
+              shadows: [Shadow(color: Colors.black.withOpacity(0.5),blurRadius: 1,offset: const Offset(1, 1))],
             ),
             color: Colors.white,
           ),
@@ -320,96 +321,6 @@ class _UlasanState extends State<Ulasan> {
   );
 }
 
-
-  Widget rating(int x) {
-    
-    return Row(
-      children: List.generate(
-        5,
-        (index) => Icon(
-          Icons.star,
-          color: index < x ? Colors.amber : Colors.grey,
-          size: 24,
-        ),
-      ),
-    );
-  }
-}
-
-// Page Semua Ulasan
-class AllCommentsPage extends StatelessWidget {
-  final String index;
-  final String kategori;
-
-  const AllCommentsPage(
-      {super.key, required this.index, required this.kategori});
-
-  @override
-  Widget build(BuildContext context) {
-    final tReview reviewData = reviews.firstWhere(
-      (review) => review.index == index && review.kategori == kategori,
-      orElse: () => tReview(index: index, kategori: kategori, comments: []),
-    );
-
-    return Scaffold(
-      appBar: AppBar(title: const Text("Semua Ulasan")),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: reviewData.comments.isEmpty
-            ? const Center(child: Text('Belum ada ulasan.'))
-            : ListView(
-                children: reviewData.comments
-                    .map((review) => ulasanCard(review))
-                    .toList(),
-              ),
-      ),
-    );
-  }
-
-  Widget ulasanCard(Review review) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ClipOval(
-                child: Image.asset(
-                  "assets/img/gambar.jpg",
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(review.username),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          rating(review.rating),
-          const SizedBox(height: 10),
-          Text(review.comment),
-        ],
-      ),
-    );
-  }
 
   Widget rating(int x) {
     

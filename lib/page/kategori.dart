@@ -67,7 +67,7 @@ class _KategoriiState extends State<Kategorii> {
     return GestureDetector(
       onTap: () {
        Navigator.push(context, MaterialPageRoute(builder: (context) {
-         return Mapp();
+         return const Mapp();
        },));
       },
       child: Container(

@@ -24,7 +24,7 @@ class _MappState extends State<Mapp> {
               Container(
                 width: screenWidth,
                 height: screenHeight,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/img/map.png"), // Ganti dengan path gambar Anda
                     fit: BoxFit.cover, // Menyesuaikan gambar untuk memenuhi layar
@@ -54,7 +54,7 @@ Widget card(BuildContext context, double top, double left, String index, String 
       child: Container(
         width: 20, // Ukuran kontainer
         height: 20, // Tinggi kontainer
-        padding: EdgeInsets.all(10), // Jarak antara teks dan tepi kontainer
+        padding: const EdgeInsets.all(10), // Jarak antara teks dan tepi kontainer
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.5), // Warna latar belakang kotak dengan transparansi
           borderRadius: BorderRadius.circular(15), // Menambahkan sudut membulat pada kotak

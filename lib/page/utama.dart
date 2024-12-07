@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:the_nice_funstantic_park/page/kategori.dart';
 import 'package:the_nice_funstantic_park/page/search.dart';
 import 'package:the_nice_funstantic_park/page/ulasan.dart';
@@ -20,81 +21,126 @@ class _UtamaState extends State<Utama> {
   @override
   void initState() {
     super.initState();
-
     Future.delayed(const Duration(seconds: 3), _nextPage);
   }
 
   void _nextPage() {
-    if (_currentPage < gambar.length - 1) {
+    if (_controller.hasClients) {
+      setState(() {
+        _currentPage = (_currentPage + 1) % gambar.length;
+      });
       _controller.animateToPage(
-        _currentPage + 1,
+        _currentPage,
         duration: const Duration(seconds: 3),
         curve: Curves.easeInOut,
       );
-      setState(() {
-        _currentPage++;
-      });
-    } else {
-      _controller.animateToPage(
-        0,
-        duration: const Duration(seconds: 3),
-        curve: Curves.easeInOut,
-      );
-      setState(() {
-        _currentPage = 0;
-      });
+      Future.delayed(const Duration(seconds: 5), _nextPage);
     }
+  }
 
-    Future.delayed(const Duration(seconds: 5), _nextPage);
+  void navigateToPage(Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          gambarBadag(context),
-
-          // Main content
-          Container(
-            margin: EdgeInsets.only(top: screenHeight / 4 + 70),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(45),
-                topRight: Radius.circular(45),
-              ),
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-              child: Column(
-                children: [
-                  // Category Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      kategoriButton("Destinasi", 0),
-                      kategoriButton("Play Ground", 1),
-                      kategoriButton("Restoran", 2),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(child: tampil()),
-                ],
+    return WillPopScope(
+      onWillPop: () async {
+       
+        bool exitApp = await _showExitDialog(context);
+        return exitApp;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            gambarBadag(context),
+            Positioned(
+              bottom: 20,
+              left: MediaQuery.of(context).size.width / 2 - 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(gambar.length, (index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: _currentPage == index ? 10 : 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: _currentPage == index ? Colors.red : Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  );
+                }),
               ),
             ),
-          ),
-
-          // AppBar
-          createAppbar(),
-        ],
+            Container(
+              margin: EdgeInsets.only(top: screenHeight / 4 + 70),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(45),
+                  topRight: Radius.circular(45),
+                ),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        kategoriButton("Destinasi", 0),
+                        kategoriButton("Play Ground", 1),
+                        kategoriButton("Restoran", 2),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(child: tampil()),
+                  ],
+                ),
+              ),
+            ),
+            createAppbar(),
+          ],
+        ),
       ),
     );
   }
 
+  Future<bool> _showExitDialog(BuildContext context) async {
+  // Menampilkan dialog konfirmasi keluar aplikasi
+  return (await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Konfirmasi"),
+          content: const Text("Apakah Anda yakin ingin keluar dari aplikasi?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Tidak keluar
+              },
+              child: const Text("Tidak"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Keluar aplikasi
+                SystemNavigator.pop();  // Menutup aplikasi
+              },
+              child: const Text("Ya"),
+            ),
+          ],
+        ),
+      )) ??
+      false;
+}
+
+
   Widget gambarBadag(BuildContext context) {
+    // Pastikan daftar gambar tidak kosong
+    if (gambar.isEmpty) {
+      return const Center(child: Text("Tidak ada gambar"));
+    }
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2 - 95,
@@ -110,7 +156,6 @@ class _UtamaState extends State<Utama> {
     );
   }
 
-  // Category display
   Widget tampil() {
     if (selectedIndex == 0) {
       return listViewBuilder(destinasiData);
@@ -146,15 +191,7 @@ class _UtamaState extends State<Utama> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Ulasan(
-              index: index,
-              kategori: kategori,
-            ),
-          ),
-        );
+        navigateToPage(Ulasan(index: index, kategori: kategori));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -174,7 +211,6 @@ class _UtamaState extends State<Utama> {
             border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -207,44 +243,32 @@ class _UtamaState extends State<Utama> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10,right: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           truncatedDescription,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 9),textAlign: TextAlign.justify,),
+                          style: const TextStyle(fontSize: 9),
+                          textAlign: TextAlign.justify,
+                        ),
                       ),
                       Expanded(
                         child: Align(
                           alignment: Alignment.bottomRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Ulasan(
-                                    index: index,
-                                    kategori: kategori,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(right: 10, bottom: 10),
-                              
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.red,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "Ulasan",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          child: Container(
+                            margin:
+                                const EdgeInsets.only(right: 10, bottom: 10),
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.red,
+                            ),
+                            child: const Center(
+                              child: Text(
+                                "Ulasan",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -275,15 +299,7 @@ class _UtamaState extends State<Utama> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const Kategorii();
-                })).then((shouldRefresh) {
-                  if (shouldRefresh == true) {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                  }
-                });
+                navigateToPage(const Kategorii());
               },
               icon: const Icon(Icons.apps),
               iconSize: 40,
@@ -291,11 +307,7 @@ class _UtamaState extends State<Utama> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const Search();
-                  },
-                ));
+                navigateToPage(const Search());
               },
               icon: const Icon(Icons.search),
               iconSize: 40,

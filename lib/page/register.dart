@@ -19,44 +19,54 @@ class _RegisterState extends State<Register> {
   }
 
   void daftar() {
-    if(emailControler.text.isEmpty || passControler.text.isEmpty || cpassControler.text.isEmpty)
-    {
+    if (emailControler.text.isEmpty ||
+        passControler.text.isEmpty ||
+        cpassControler.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tidak Boleh Ada yang Kosong'),duration: Duration(seconds: 2)),
+        const SnackBar(
+          content: Text('Tidak Boleh Ada yang Kosong'),
+          duration: Duration(seconds: 2),
+        ),
       );
-    }else{
-       if (cekPass()) {
-      setState(() {
-        profile.isi[0]=emailControler.text;
-         profile.isi[4]=passControler.text;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Berhasil Daftar'),duration: Duration(seconds: 2)),
-      );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const Utama();
-      },));
-
-      
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password dan Confirm Password tidak sama'),duration: Duration(seconds: 2)),
-      );
+      if (cekPass()) {
+        setState(() {
+          profile.isi[0] = emailControler.text;
+          profile.isi[1] = emailControler.text;
+          profile.isi[4] = passControler.text;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Berhasil Daftar'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const Utama()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password dan Confirm Password tidak sama'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
-    }
-   
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red,
-      body: SingleChildScrollView(  
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
-               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height /5,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -67,7 +77,12 @@ class _RegisterState extends State<Register> {
                       padding: const EdgeInsets.only(top: 10, left: 10),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Utama()),
+                            (Route<dynamic> route) => false,
+                          );
                         },
                         icon: const Icon(Icons.arrow_back),
                         color: Colors.black,
@@ -79,18 +94,20 @@ class _RegisterState extends State<Register> {
                       child: Text(
                         "Register",
                         style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height- MediaQuery.of(context).size.height/5,
+              height: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).size.height / 5,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -108,7 +125,7 @@ class _RegisterState extends State<Register> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10), // Space
+                    const SizedBox(height: 10),
                     TextField(
                       controller: emailControler,
                       decoration: InputDecoration(
@@ -126,7 +143,7 @@ class _RegisterState extends State<Register> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10), // Space
+                    const SizedBox(height: 10),
                     TextField(
                       controller: passControler,
                       obscureText: true,
@@ -145,7 +162,7 @@ class _RegisterState extends State<Register> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10), // Space
+                    const SizedBox(height: 10),
                     TextField(
                       controller: cpassControler,
                       obscureText: true,
@@ -158,12 +175,12 @@ class _RegisterState extends State<Register> {
                         prefixIconColor: Colors.black38,
                       ),
                     ),
-                    const SizedBox(height: 50), // Space
+                    const SizedBox(height: 50),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: daftar,  // Call the daftar function
+                        onPressed: daftar,
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.red,
@@ -177,13 +194,17 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30), // Space
-                    const Center(child:  Text(
-                      "Daftar Dengan",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 15),
-                    ),),
-                    const SizedBox(height: 10), // Space
+                    const SizedBox(height: 30),
+                    const Center(
+                      child: Text(
+                        "Daftar Dengan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -211,7 +232,7 @@ class _RegisterState extends State<Register> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20), // Space
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

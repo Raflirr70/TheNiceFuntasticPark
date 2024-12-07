@@ -13,97 +13,104 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  
   int selectedIndex = 1;
- 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const Pengaturan();
-              })).then((shouldRefresh) {
-                if (shouldRefresh == true) {
-                  setState(() {
-                    selectedIndex = 1;
-                  });
-                }
-              });
-            },
-            icon: const Icon(
-              Icons.settings,
-              size: 30,
-            ),
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        setState(() {
+          selectedIndex = 1; // Refresh halaman saat back
+        });
+        return true;
+      },
+      child: Scaffold(
         backgroundColor: Colors.red,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: ClipOval(
-                    child: Image.asset(
-                      "assets/img/gambar.jpg",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Nama Pengguna",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        kategoriButton("Detail Akun", 1),
-                        kategoriButton("Tempat Favorit", 2),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    tampil()
-                  ],
-                ),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const Pengaturan();
+                })).then((shouldRefresh) {
+                  if (shouldRefresh == true) {
+                    setState(() {
+                      selectedIndex = 1; // Menyegarkan tampilan setelah kembali dari Pengaturan
+                    });
+                  }
+                });
+              },
+              icon: const Icon(
+                Icons.settings,
+                size: 30,
               ),
             ),
-          ),
-        ],
+          ],
+          backgroundColor: Colors.red,
+          elevation: 0,
+        ),
+        body: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/img/gambar.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Nama Pengguna",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          kategoriButton("Detail Akun", 1),
+                          kategoriButton("Tempat Favorit", 2),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      tampil()
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
