@@ -9,30 +9,33 @@ class Mapp extends StatefulWidget {
 }
 
 class _MappState extends State<Mapp> {
+  double initialScale = 1; // Skala awal gambar
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Map The Nice Funtastic"),
+      ),
+      backgroundColor: Color(0xFFAaF2FF),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          double screenWidth = constraints.maxWidth; // Lebar layar
-          double screenHeight = constraints.maxHeight; // Tinggi layar
-          
-          return Stack(
-            children: [
-              // Gambar sebagai latar belakang
-              Container(
-                width: screenWidth,
-                height: screenHeight,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/img/map.png"), // Ganti dengan path gambar Anda
-                    fit: BoxFit.cover, // Menyesuaikan gambar untuk memenuhi layar
-                  ),
-                ),
+          return InteractiveViewer(
+            boundaryMargin: EdgeInsets.all(20.0),
+            minScale: 0.5, // Skala minimum zoom-out
+            maxScale: 4.0, // Skala maksimum zoom-in
+            child: Center(
+              child: Transform.scale(
+                scale: initialScale, // Skala awal
+                child: Transform.rotate(
+                    angle: 0, // Rotasi 90 derajat
+                    child: Image.asset(
+                      "assets/img/map.jpg", // Ganti dengan path gambar Anda
+                      fit:
+                          BoxFit.contain, // Atur agar gambar sesuai dalam wadah
+                    )),
               ),
-             
-            ],
+            ),
           );
         },
       ),
@@ -41,25 +44,29 @@ class _MappState extends State<Mapp> {
 }
 
 // Fungsi card dengan posisi dinamis
-Widget card(BuildContext context, double top, double left, String index, String kategori) {
+Widget card(BuildContext context, double top, double left, String index,
+    String kategori) {
   return Positioned(
     top: top, // Jarak dari atas layar (dinamis)
     left: left, // Jarak dari kiri layar (dinamis)
     child: GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Ulasan(index: index, kategori: kategori); // Navigasi ke halaman Ulasan
+          return Ulasan(
+              index: index, kategori: kategori); // Navigasi ke halaman Ulasan
         }));
       },
       child: Container(
         width: 20, // Ukuran kontainer
         height: 20, // Tinggi kontainer
-        padding: const EdgeInsets.all(10), // Jarak antara teks dan tepi kontainer
+        padding:
+            const EdgeInsets.all(10), // Jarak antara teks dan tepi kontainer
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5), // Warna latar belakang kotak dengan transparansi
-          borderRadius: BorderRadius.circular(15), // Menambahkan sudut membulat pada kotak
+          color: Colors.white.withOpacity(
+              0.5), // Warna latar belakang kotak dengan transparansi
+          borderRadius: BorderRadius.circular(
+              15), // Menambahkan sudut membulat pada kotak
         ),
-       
       ),
     ),
   );
