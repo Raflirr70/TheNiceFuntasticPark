@@ -4,6 +4,7 @@ import 'package:the_nice_funstantic_park/data/list_komentar.dart';
 import 'package:the_nice_funstantic_park/data/gambarkecil.dart';
 import 'package:the_nice_funstantic_park/method/ceklisst.dart';
 import 'package:the_nice_funstantic_park/page/allcoment.dart';
+import 'package:the_nice_funstantic_park/page/map.dart';
 
 class Ulasan extends StatefulWidget {
   final String index;
@@ -236,48 +237,55 @@ class _UlasanState extends State<Ulasan> {
   }
 
   Widget gambarBesar(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-            ),
+  return Stack(
+    children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 3,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                Navigator.pop(context, true);
-              });
-            },
-            icon:  Icon(
-              Icons.arrow_back,
-              size: 30,
-              color: Colors.white,
-              shadows: [Shadow(color: Colors.black.withOpacity(0.5),blurRadius: 1,offset: const Offset(1, 1))],
-            ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
+          child: Image.asset(
+            image,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              Navigator.pop(context, true);
+            });
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30,
             color: Colors.white,
+            shadows: [
+              Shadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 1,
+                offset: const Offset(1, 1),
+              ),
+            ],
           ),
         ),
-      ],
-    );
-  }
+      ),
+     mapp(widget.kategori,widget.index)
+    ],
+  );
+}
+
 
   Widget gambarLainya(int index, int kategori) {
     final gambar = gambarList.firstWhere(
@@ -334,5 +342,31 @@ class _UlasanState extends State<Ulasan> {
         ),
       ),
     );
+  }
+
+  Widget mapp(String kategori,String index)
+  {
+    return  Positioned(
+        bottom: 10,
+        right: 10,
+        child: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Center(
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Mapp(kategori: kategori, index: index);
+                },));
+              },
+              icon: const Icon(Icons.location_on_sharp, color: Colors.white),
+            ),
+          ),
+        ),
+      );
   }
 }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:the_nice_funstantic_park/data/map.dart';
+import 'package:the_nice_funstantic_park/page/kategori.dart';
 import 'package:the_nice_funstantic_park/page/ulasan.dart';
 
 class Mapp extends StatefulWidget {
-  const Mapp({super.key});
+  final String kategori;
+  final String index;
+
+  const Mapp({super.key,required this.kategori ,required this.index});
 
   @override
   State<Mapp> createState() => _MappState();
@@ -10,7 +15,7 @@ class Mapp extends StatefulWidget {
 
 class _MappState extends State<Mapp> {
   double initialScale = 1; // Skala awal gambar
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,7 @@ class _MappState extends State<Mapp> {
                 child: Transform.rotate(
                     angle: 0, // Rotasi 90 derajat
                     child: Image.asset(
-                      "assets/img/map.jpg", // Ganti dengan path gambar Anda
+                    cariGambar(widget.kategori,widget.index), // Ganti dengan path gambar Anda
                       fit:
                           BoxFit.contain, // Atur agar gambar sesuai dalam wadah
                     )),
@@ -70,4 +75,14 @@ Widget card(BuildContext context, double top, double left, String index,
       ),
     ),
   );
+  
+}
+
+
+String cariGambar(String kategori, String index) {
+  var hasil = map.firstWhere(
+    (item) => item.kategori == kategori && item.index == index,
+    orElse: () => Map(kategori: "", index: "", gambar: "assets/img/map.jpg"),
+  );
+  return hasil.gambar;
 }
